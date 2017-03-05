@@ -1,0 +1,30 @@
+{
+  "name": "mg-cache",
+  "version": "1.0.0",
+  "description": "Simple cache with memory and mongo flavours",
+  "main": "mg-cache.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gardere/mg-cache.git"
+  },
+  "keywords": [
+    "cache",
+    "memory",
+    "mongo"
+  ],
+  "author": "Mathieu Gardere <wam@mathieugardere.co.uk> (http://www.gardere.io)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gardere/mg-cache/issues"
+  },
+  "homepage": "https://github.com/gardere/mg-cache#readme",
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "mongodb": "^2.2.24",
+    "q": "^1.4.1",
+    "run-once-resolve-all": "^1.0.0"
+  }
+}
