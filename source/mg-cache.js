@@ -2,7 +2,7 @@ var _ = require('lodash');
 var q = require('q');
 var run1ceResolveAll = require('run-once-resolve-all');
 
-var log = function() {};
+var log = console.log;
 
 var DEFAULT_CACHE_VALUE_TTL = 300000;
 
@@ -16,6 +16,8 @@ var cacheDurations = {
     ONE_HOUR: 60 * ONE_MINUTE,
     ONE_DAY: 1440 * ONE_MINUTE
 };
+
+let cache;
 
 function tryToJSONize(str) {
     try {
@@ -45,7 +47,9 @@ function getFromCacheOrFetch(cacheKey, retrMethod, ttl) {
                 .then(function(result) {
                     ttl = ttl || DEFAULT_CACHE_VALUE_TTL;
                     return cache.put(cacheKey, getStoreableValue(result), ttl)
-                    .then(function () {
+                    .then(() => result)
+                    .catch(function(err) {
+                        log('could not store value for', cacheKey);
                         return result;
                     });
                 });
