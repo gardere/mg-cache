@@ -25,6 +25,7 @@
     "lodash": "^4.17.4",
     "mongodb": "^2.2.24",
     "q": "^1.4.1",
+    "redis": "^2.6.5",
     "run-once-resolve-all": "^1.0.0"
   }
 }

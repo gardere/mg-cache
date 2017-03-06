@@ -82,6 +82,9 @@ function configure(configurationDetails) {
         case 'mongodb':
             cache = require('./mongo-cache.js');
             break;
+        case 'redis':
+            cache = require('./redis-cache.js');
+            break;
         default:
             throw 'unknown cache type: ' + configurationDetails.cacheType;
     }
