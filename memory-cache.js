@@ -12,7 +12,7 @@ module.exports.get = function(cacheKey) {
 module.exports.put = function(cacheKey, value, ttl) {
     cache[cacheKey] =  {
     	value: value,
-    	expiryDate: (ttl !== NEVER_EXPIRES) ? _.now() + ttl : NEVER_EXPIRES;
+    	expiryDate: (ttl !== NEVER_EXPIRES) ? _.now() + ttl : NEVER_EXPIRES
     };
     return q.when();
 };
