@@ -88,10 +88,15 @@ function configure(configurationDetails) {
     return cache.configure(configurationDetails);
 }
 
+function setLogger(logger) {
+    log = logger;
+}
+
 module.exports.getFromCacheOrFetch = getFromCacheOrFetch;
 module.exports.expiresAt = expiresAt;
 module.exports.cacheDurations = cacheDurations;
 module.exports.configure = configure;
+module.exports.setLogger = setLogger;
 
 module.exports.put = function(cacheKey, value, ttl) {
     return cache.put(cacheKey, getStoreableValue(value), ttl || DEFAULT_CACHE_VALUE_TTL);
