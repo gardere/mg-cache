@@ -2,16 +2,14 @@ var _ = require('lodash');
 var q = require('q');
 var run1ceResolveAll = require('run-once-resolve-all');
 
-var log = console.log;
-// var log = function() {};
+var log = function() {};
 
 var DEFAULT_CACHE_VALUE_TTL = 300000;
 
 var ONE_MINUTE = 60 * 1000;
 
-var NEVER_EXPIRES = -1;
-
 var cacheDurations = {
+    NEVER_EXPIRES: -1,
     ONE_SECOND: ONE_MINUTE / 60,
     ONE_MINUTE: ONE_MINUTE,
     FIFTEEN_MINUTES: 15 * ONE_MINUTE,
@@ -43,11 +41,11 @@ function getFromCacheOrFetch(cacheKey, retrMethod, ttl) {
             var expiryDate = results[1];
             if (!(cacheResult && expiryDate)) {
                 log(cacheKey + ' NOT found in cache');
-                return retrMethod().
-                then(function(result) {
+                return retrMethod()
+                .then(function(result) {
                     ttl = ttl || DEFAULT_CACHE_VALUE_TTL;
-                    return cache.put(cacheKey, getStoreableValue(result), ttl).
-                    then(function () {
+                    return cache.put(cacheKey, getStoreableValue(result), ttl)
+                    .then(function () {
                         return result;
                     });
                 });
@@ -56,8 +54,9 @@ function getFromCacheOrFetch(cacheKey, retrMethod, ttl) {
                 return q.when(tryToJSONize(cacheResult));
             }
         }).
-        fail(function(err) {
+        catch(function(err) {
             log('error retrieving ' + cacheKey + ' from cache: ' + JSON.stringify(err) + '\n' + err.stack, 'MY CACHE', 'error');
+            throw err;
         });
     }, cacheKey);
 }
@@ -65,8 +64,8 @@ function getFromCacheOrFetch(cacheKey, retrMethod, ttl) {
 function expiresAt(cacheKey) {
     return cache.expiresAt(cacheKey).
     then(function(expiryDate) {
-        if (expiryDate === NEVER_EXPIRES) {
-            return NEVER_EXPIRES;
+        if (expiryDate === cacheDurations.NEVER_EXPIRES) {
+            return cacheDurations.NEVER_EXPIRES;
         } else if (expiryDate < _.now()) {
             return null;
         } else {
@@ -93,7 +92,6 @@ module.exports.getFromCacheOrFetch = getFromCacheOrFetch;
 module.exports.expiresAt = expiresAt;
 module.exports.cacheDurations = cacheDurations;
 module.exports.configure = configure;
-module.exports.NEVER_EXPIRES = NEVER_EXPIRES;
 
 module.exports.put = function(cacheKey, value, ttl) {
     return cache.put(cacheKey, getStoreableValue(value), ttl || DEFAULT_CACHE_VALUE_TTL);
