@@ -36,7 +36,7 @@ export const put = (key, value, ttl_ms) => clientActionWrapper('set', [key, valu
       .then(() => clientActionWrapper('expire', [key, ttl_ms / 1000], 'ttl set', 'error setting ttl'));
 
 export const expiresAt = key => clientActionWrapper('ttl', [key], 'retrieved ttl', 'error retrieving ttl')
-    .then(ttl => +(Date() + ttl));
+    .then(ttl => +(Date()) + ttl);
 
 
 export const configure = newConfig => {
