@@ -1,6 +1,10 @@
 import {default as redis} from 'redis';
 
-let logger = console;
+let logger = {
+  log: () => {},
+  error: () => {},
+  info: () => {}
+};
 let config = {};
 let redisClient;
 
@@ -36,7 +40,7 @@ export const put = (key, value, ttl_ms) => clientActionWrapper('set', [key, valu
       .then(() => clientActionWrapper('expire', [key, ttl_ms / 1000], 'ttl set', 'error setting ttl'));
 
 export const expiresAt = key => clientActionWrapper('ttl', [key], 'retrieved ttl', 'error retrieving ttl')
-    .then(ttl => +(Date()) + ttl);
+    .then(ttl => +(new Date()) + ttl * 1000);
 
 
 export const configure = newConfig => {
