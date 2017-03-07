@@ -22,7 +22,7 @@ const clientActionWrapper = (actionName, args, successMessage, errorMessage) => 
               reject(err);
             }
             else {
-              logger.log('redis:', successMessage, 'for key "', args[0], '"');
+              logger.log('redis:', successMessage, 'for key', args[0]);
               resolve(value);
             }
           });
@@ -35,7 +35,8 @@ export const get = key => clientActionWrapper('get', [key], 'retrieved value', '
 export const put = (key, value, ttl_ms) => clientActionWrapper('set', [key, value], 'value set', 'error setting value')
       .then(() => clientActionWrapper('expire', [key, ttl_ms / 1000], 'ttl set', 'error setting ttl'));
 
-export const expiresAt = key => clientActionWrapper('ttl', [key], 'retrieved ttl', 'error retrieving ttl');
+export const expiresAt = key => clientActionWrapper('ttl', [key], 'retrieved ttl', 'error retrieving ttl')
+    .then(ttl => +(Date() + ttl));
 
 
 export const configure = newConfig => {
