@@ -95,3 +95,5 @@ module.exports.expiresAt = function(cacheKey) {
     return retrieveMongoDbDocument(cacheKey, 'expiryDate');
 };
 
+export const REQUIRES_STRINGIFY = true;
+

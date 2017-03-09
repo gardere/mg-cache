@@ -1,6 +1,6 @@
 {
   "name": "mg-cache",
-  "version": "1.0.6",
+  "version": "1.2.0",
   "description": "Simple cache with memory and mongo flavours",
   "main": "./distribution/mg-cache.js",
   "scripts": {

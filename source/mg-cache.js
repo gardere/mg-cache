@@ -19,18 +19,27 @@ var cacheDurations = {
 
 let cache;
 
-function tryToJSONize(str) {
-    try {
-        return JSON.parse(str);
-    } catch (err) {
-        return str;
+function tryToJSONize(obj) {
+    if (cache.REQUIRES_STRINGIFY) {
+        try {
+            return JSON.parse(obj);
+        } catch (err) {
+            return obj;
+        }
+    } else {
+        return obj;
     }
+
 }
 
 function getStoreableValue(obj) {
-    try {
-        return JSON.stringify(obj);
-    } catch (err) {
+    if (cache.REQUIRES_STRINGIFY) {
+        try {
+            return JSON.stringify(obj);
+        } catch (err) {
+            return obj;
+        }
+    } else {
         return obj;
     }
 }
@@ -54,7 +63,7 @@ function getFromCacheOrFetch(cacheKey, retrMethod, ttl) {
                     });
                 });
             } else {
-                log(cacheKey + ' was found in cache: ' + cacheResult.substring(0, 60), 'MY CACHE', 'info');
+                log(cacheKey + ' was found in cache', 'MY CACHE', 'info');
                 return q.when(tryToJSONize(cacheResult));
             }
         }).

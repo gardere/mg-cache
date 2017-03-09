@@ -49,3 +49,4 @@ export const configure = newConfig => {
 
 export const NEVER_EXPIRES = -1;
 
+export const REQUIRES_STRINGIFY = true;
